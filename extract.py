@@ -39,7 +39,7 @@ def getResponse(url, params):
 	"""
 	return requests.get(url, params = params).text
 
-def divideDate(start, finish):
+def sliceDate(start, finish):
 	"""
 	Calculate the mid date from two dates.
 	Args:
@@ -48,13 +48,11 @@ def divideDate(start, finish):
 	Return:
 		The middle date from two dates.
 	"""
-	sPrefixes = start.split("-")
-	fPrefixes = finish.split("-")
-	if ((int(sPrefixes[2]) + int(fPrefixes[2])) >> 1 == int(sPrefixes[2])):
-		return sPrefixes[0] + "-" + fPrefixes[1] + "-" +str(int(fPrefixes[2]) >> 1)
-	else:
-		return sPrefixes[0] + "-" + str((int(sPrefixes[1]) + int(fPrefixes[1])) >> 1) + "-" + str((int(sPrefixes[2]) + int(fPrefixes[2])) >> 1)
-
+	start = [int(x) for x in start.split("-")]
+	finish = [int(x) for x in finish.split("-")]
+	start = date(start[0], start[1], start[2])
+	finish =  date(finish[0], finish[1], finish[2])
+	return str((start + (finish - start) / 2))
 
 def extractContracts(start, finish):
 	"""
