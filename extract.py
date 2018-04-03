@@ -1,6 +1,6 @@
 #@author: KevinMendieta
 #libraries
-from datetime import date
+from datetime import date, timedelta
 import requests
 import math
 
@@ -46,13 +46,13 @@ def sliceDate(start, finish):
 		start: the first date.
 		finish: the second date.
 	Return:
-		The middle date from two dates.
+		The middle date from two dates in python datetime.
 	"""
 	start = [int(x) for x in start.split("-")]
 	finish = [int(x) for x in finish.split("-")]
 	start = date(start[0], start[1], start[2])
 	finish =  date(finish[0], finish[1], finish[2])
-	return str((start + (finish - start) / 2))
+	return (start + (finish - start) / 2)
 
 def extractContracts(start, finish):
 	"""
@@ -74,7 +74,9 @@ def extractContracts(start, finish):
 	calls += 1
 	if (data == '"Hay mÃ¡s de 100 resultados"'):
 		middle = sliceDate(start, finish)
-		return int(extractContracts(start, middle)) + int(extractContracts(middle, finish))
+		middleBack = str(middle - timedelta(days = 1))
+		middle = str(middle)
+		return int(extractContracts(start, middleBack)) + int(extractContracts(middle, finish))
 	else:
 		return int(data)
 
